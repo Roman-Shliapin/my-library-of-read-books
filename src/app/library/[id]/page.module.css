@@ -1,0 +1,67 @@
+.hero {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.cover {
+  width: 110px;
+  height: 150px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1a3c34, #2f6b5c);
+  color: #f7faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display), serif;
+  font-size: 2.2rem;
+  font-weight: 650;
+  box-shadow: var(--shadow);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.title {
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  line-height: 1.15;
+  margin: 8px 0 6px;
+}
+
+.author {
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.dates {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.blockTitle {
+  font-family: var(--font-display), serif;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.notes {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.sectionHead {
+  margin-bottom: 12px;
+}
+
+.sectionHead h2 {
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+}

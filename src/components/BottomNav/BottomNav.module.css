@@ -1,0 +1,66 @@
+.nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent, rgba(243, 246, 244, 0.96) 28%);
+  pointer-events: none;
+}
+
+.inner {
+  pointer-events: auto;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 6px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.item {
+  min-height: 56px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-weight: 650;
+  color: var(--ink-soft);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.item:active {
+  transform: scale(0.96);
+}
+
+.icon {
+  display: flex;
+  line-height: 0;
+}
+
+.label {
+  font-size: 0.68rem;
+  letter-spacing: 0.01em;
+}
+
+.active {
+  background: var(--accent);
+  color: #f7faf8;
+}
+
+@media (min-width: 768px) {
+  .label {
+    font-size: 0.78rem;
+  }
+}

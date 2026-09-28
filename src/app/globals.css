@@ -1,17 +1,38 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-top: #dce8e2;
+  --bg-bottom: #f3f6f4;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: #ffffff;
+  --ink: #15241f;
+  --ink-soft: #4a5c55;
+  --line: rgba(21, 36, 31, 0.1);
+  --accent: #1a3c34;
+  --accent-soft: #2f6b5c;
+  --accent-warm: #c45c26;
+  --ok: #2f6b5c;
+  --reading: #2b5f8a;
+  --want: #8a6a2b;
+  --shadow: 0 12px 40px rgba(21, 36, 31, 0.08);
+  --radius: 18px;
+  --nav-height: 84px;
+  --header-height: 56px;
+  --sat: env(safe-area-inset-top);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+  --sar: env(safe-area-inset-right);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   height: 100%;
+  /* запобігає bounce-скролу поверх PWA на iOS */
+  overscroll-behavior: none;
 }
 
 html,
@@ -22,19 +43,34 @@ body {
 
 body {
   min-height: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 120% 80% at 10% -10%, #c9ddd4 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 0%, #e8efe4 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  background-attachment: fixed;
+  font-family: var(--font-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* під notch / Dynamic Island */
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  touch-action: manipulation;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+@media (display-mode: standalone) {
+  body {
+    /* у встановленому PWA фон без «браузерної» смуги */
+    user-select: none;
+  }
+
+  input,
+  textarea {
+    user-select: text;
+  }
 }
 
 a {
@@ -42,8 +78,273 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.page {
+  flex: 1;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding:
+    calc(var(--header-height) + var(--sat) + 14px)
+    16px
+    calc(var(--nav-height) + var(--sab) + 20px);
+}
+
+.pageTitle {
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.35rem;
+}
+
+.pageLead {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  margin-bottom: 1.4rem;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: #f7faf8;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btnSecondary {
+  background: var(--surface-strong);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btnDanger {
+  background: #8f2f2f;
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--ink-soft);
+  border-color: transparent;
+  min-height: 40px;
+  padding: 0 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  outline: none;
+  /* 16px+ — щоб iOS не зумив поле при фокусі */
+  font-size: 16px;
+  touch-action: manipulation;
+}
+
+.field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(47, 107, 92, 0.15);
+}
+
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-soft);
+}
+
+.empty strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.badgeWant {
+  background: rgba(138, 106, 43, 0.14);
+  color: var(--want);
+}
+
+.badgeReading {
+  background: rgba(43, 95, 138, 0.14);
+  color: var(--reading);
+}
+
+.badgeFinished {
+  background: rgba(47, 107, 92, 0.14);
+  color: var(--ok);
+}
+
+.stars {
+  color: var(--accent-warm);
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(26, 60, 52, 0.08);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filterLink {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.filterLinkActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #f7faf8;
+}
+
+.searchBar {
+  margin-bottom: 14px;
+}
+
+.searchBar input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  font-size: 16px;
+  touch-action: manipulation;
+}
+
+.filterLink,
+.btn {
+  touch-action: manipulation;
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 1.7rem;
+  }
+
+  .row .btn {
+    flex: 1 1 calc(50% - 6px);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise {
+  animation: riseIn 0.45s ease both;
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding-top: calc(var(--header-height) + var(--sat) + 28px);
   }
 }

@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Моя бібліотека
 
-## Getting Started
+Особистий mobile-first додаток для обліку прочитаних книг і цитат.
 
-First, run the development server:
+## Можливості
+
+- Книги: назва, автор, статус, дати початку/кінця, оцінка, теги, нотатки, обкладинка (URL)
+- Цитати: текст, сторінка, улюблене, привʼязка до книги
+- Фільтри й пошук у бібліотеці та цитатах
+- Статистика на головній
+
+## Запуск
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Відкрий [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### База даних
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**За замовчуванням** дані зберігаються локально у `.data/library.json` — можна одразу користуватися.
 
-## Learn More
+**MongoDB Atlas / свій сервер** — створи `.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/my-library
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Після цього додаток автоматично перейде на MongoDB.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## PWA (телефон)
 
-## Deploy on Vercel
+Додаток можна встановити на головний екран:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Збери прод: `npm run build && npm start` (потрібен HTTPS або localhost)
+2. **Android Chrome**: банер «Встановити» або меню → «Встановити додаток»
+3. **iPhone Safari**: Поділитися → «На екран «Дому»»
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Є маніфест, іконки, офлайн-кеш оболонки (service worker) і нижня навігація під великий палець.
+
+## Стек
+
+Next.js 16 · React 19 · Mongoose (опційно) · PWA · CSS Modules
